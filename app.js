@@ -5,7 +5,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
-
+const fs = require('fs');
 const {initializeServer, isUpdateAvailable} = require('./helpers/server');
 
 const serverRouter = require('./routes/server');
@@ -28,6 +28,13 @@ cron.schedule("0 1 * * *", function() {
 
 (async function () {
   try {
+    fs.readFile('./build', 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log("Build:", data);
+      }
+    });
     await initializeServer();
   } catch (e) {
     console.error(e)
